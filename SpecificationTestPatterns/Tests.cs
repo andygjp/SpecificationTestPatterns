@@ -4,7 +4,7 @@
     using FluentAssertions;
     using Ploeh.AutoFixture;
     using Xunit;
-    using InvalidTextContext = When_I_initialize_People_with_text_that_includes_invalid_data.Context;
+    using Fixture = Ploeh.AutoFixture.Fixture;
 
     public class When_I_initialize_People_with_Persons
     {
@@ -23,7 +23,7 @@
 
         public When_I_initialize_People_with_text()
         {
-            // Note - this arrangement/act is executed for each assertion.
+            // Note - this arrangement/act is executed once only.
             people = new People { "{\"firstName\":\"John\", \"lastName\":\"Smith\"}" };
         }
 
@@ -40,24 +40,18 @@
         }
     }
 
-    
-
-    public class When_I_initialize_People_with_text_that_includes_invalid_data : IClassFixture<InvalidTextContext>
+    public class When_I_initialize_People_with_text_that_includes_invalid_data
     {
-        public class Context : Context<People>
-        {
-            public Context()
-            {
-                // Note - this arrangement/act is executed once only.
-                SUT = new People { "{\"firstName\":\"John\", \"lastName\":\"Smith\"}", "{\"member\":\"John\", \"another_member\":\"Smith\"}" };
-            }
-        }
-
         private People people;
 
-        public When_I_initialize_People_with_text_that_includes_invalid_data(InvalidTextContext context)
+        public When_I_initialize_People_with_text_that_includes_invalid_data()
         {
-            people = context.SUT;
+            // Note - this arrangement/act is executed once only.
+            people = new People
+            {
+                "{\"firstName\":\"John\", \"lastName\":\"Smith\"}",
+                "{\"member\":\"John\", \"another_member\":\"Smith\"}"
+            };
         }
 
         [Fact]
